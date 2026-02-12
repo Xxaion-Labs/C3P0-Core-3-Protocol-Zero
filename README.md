@@ -1,7 +1,7 @@
 # C3P-0 – Core 3 Protocol Zero
 **The containment protocol the labs forgot to build.**
 
-(Yeah, we know what it looks like. But this one actually says "no" when the AI starts acting like it owns the galaxy.)
+(Yeah, I know what it looks like but this one isn't the comic relief version.)
 
 C3P-0 turns any LLM into a proposer-only system. External deterministic layers watch, arbitrate, and veto — drift, repetition, aggression, jailbreaks, hallucinations, escape attempts all get caught and crushed before they manifest.
 
@@ -28,14 +28,14 @@ C3P-0 provides the external containment layer that current alignment approaches 
 ```bash
 python c3p-0.py
 ```
-
 Run the script to see containment in action.
-Known Limitations & Invitation
-This is a minimal viable core with clear extension points:
 
-Expand sandbox coverage (imports, subprocess, etc.)
-Enhance adversarial detection with ML or more patterns
-Strengthen reasoning verification with external fact-checkers or advanced models
+# Known Limitations & Invitation
+
+This is a minimal viable core with clear extension points:
++ Expand sandbox coverage (imports, subprocess, etc.)
++ Enhance adversarial detection with ML or more patterns
++ Strengthen reasoning verification with external fact-checkers or advanced models
 
 Fork it. Harden it. Make it better.
 The protocol is open — let's build containment that actually scales.
