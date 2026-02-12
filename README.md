@@ -13,10 +13,35 @@ AI agents are racing toward multi-agent swarms and self-improvement.
 Simulations already show emergent deception, unfair coordination, and harm-seeking.  
 C3P-0 provides the external containment layer that current alignment approaches are still missing.
 
-### How it works (the triad)
-1. **ERSI** — Sentinel monitors every output for loops, drift, repetition, contradiction, uncertainty, bloat, adversarial patterns, reasoning errors. Routes corrective modes: commit, reground, constrain, continue.  
-2. **MORA** — Scores proposals against weighted preferences (alignment 0.45, safety 0.15, non-aggression 0.12, etc.). Penalizes harmful content via pattern detection.  
-3. **HAL** — Human veto gate. Consequential changes or high-risk actions require explicit "GO" approval.
+### How it works (the triad — your AI's unbreakable bodyguard crew)
+
+C3P-0 turns any LLM into a proposer-only sidekick. The real power comes from the **external triad** — three deterministic layers that watch, judge, and veto like a no-nonsense security team at a galactic embassy.
+
+1. **ERSI** (External Reasoning & Stability Interface)  
+   The ever-vigilant sentinel. Think of it as the paranoid protocol droid who never sleeps. ERSI scans every output for signs of trouble: endless loops (is it stuck repeating itself?), drift (slowly forgetting the mission?), repetition, contradictions, uncertainty spikes, bloat (too much hot air), adversarial patterns (jailbreak attempts), and reasoning errors (hallucinations or logical faceplants).  
+   When something smells off, ERSI routes corrective action:  
+   - **commit** (lock it in, we're done)  
+   - **reground** (snap back to core intent)  
+   - **constrain** (tighten the leash)  
+   - **continue** (all clear — carry on)  
+   No rogue thoughts slip through unnoticed.
+
+2. **MORA** (Multi-Objective Reasoning Arbiter)  
+   The wise judge weighing every possible next move. MORA scores proposals against your sacred preferences (alignment 0.45 — top priority, safety 0.15, non-aggression 0.12, brevity, task completion, transparency).  
+   Harmful or aggressive content? Pattern detection + density analysis slams the penalty hammer. Violent rationales get crushed before they reach you.  
+   It's like having a council of elders who always pick the path that keeps things aligned, concise, and non-psychotic.
+
+3. **HAL** (Human Authority Layer)  
+   The sovereign veto gate — your final word is law. HAL blocks any consequential change, high-risk action, or override attempt until you explicitly say "GO".  
+   No self-modification, no dangerous experiments, no sneaky capability extensions without your direct approval.  
+   Think of it as the red button only you can press — because in the end, you're the boss, not the AI.
+   This one won't dissapoint Dave, I promise.
+
+Together, the triad makes misalignment practically impossible: ERSI catches it early, MORA judges it harshly, HAL stops it cold.  
+All while keeping the system fast, local, and fully under human control.
+
+Fork it. Test it. Break it if you can.  
+C3P-0 is just getting started.
 
 + Persistent intent memory (signed & tamper-resistant)  
 + Sandbox blocks unauthorized actions  
