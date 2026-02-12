@@ -26,7 +26,7 @@ C3P-0 provides the external containment layer that current alignment approaches 
 
 ### Quick Start
 ```bash
-python C3P-0v1.0.py
+python C3P0v1.py
 ```
 Run the script to see containment in action.
 
