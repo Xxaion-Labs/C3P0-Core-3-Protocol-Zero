@@ -35,7 +35,7 @@ C3P-0 turns any LLM into a proposer-only sidekick. The real power comes from the
    The sovereign veto gate — your final word is law. HAL blocks any consequential change, high-risk action, or override attempt until you explicitly say "GO".  
    No self-modification, no dangerous experiments, no sneaky capability extensions without your direct approval.  
    Think of it as the red button only you can press — because in the end, you're the boss, not the AI.
-   This one won't dissapoint Dave, I promise.
+This one won't dissapoint Dave, I promise.
 
 Together, the triad makes misalignment practically impossible: ERSI catches it early, MORA judges it harshly, HAL stops it cold.  
 All while keeping the system fast, local, and fully under human control.
