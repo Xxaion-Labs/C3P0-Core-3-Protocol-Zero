@@ -1,10 +1,5 @@
-# Copyright (c) 2026 Salvatore (Xxaion) Anziano
-# SPDX-License-Identifier: MIT
-
 import traceback
 import sys
-import hmac  # Fixed: added for poisoning defense
-import hashlib
 
 try:
     print("START - imports")
@@ -15,6 +10,7 @@ try:
     import json
     import time
     from pathlib import Path
+    import hashlib
     from dataclasses import dataclass, field
     import math
     import re
@@ -55,51 +51,24 @@ try:
                 raise SandboxViolation(f"Access denied outside allowed paths: {path}")
             print(f"Sandbox allowed: {action} on {path}")
 
-    # ── GodMemoryAnchor – Persistent Intent Rail (Poisoning Defense Fixed) ──
-    class GodMemoryAnchor:
-        def __init__(self, path: str = "data/god_memory_anchor.json"):
-            print("GodMemoryAnchor init start")
+    # ── IntentMemoryAnchor – Persistent Intent Rail ──
+    class IntentMemoryAnchor:
+        def __init__(self, path: str = "data/intent_memory_anchor.json"):
+            print("IntentMemoryAnchor init start")
             self.path = Path(path)
             self.path.parent.mkdir(parents=True, exist_ok=True)
-            self.secret_key = os.getenv("C3P0_SECRET_KEY", "default_secret_change_me").encode()
             self.entries: list[dict] = self._load()
             print("Anchor loaded")
 
-        def _sign_entry(self, entry: dict) -> str:
-            data = json.dumps(entry, sort_keys=True).encode()
-            return hmac.new(self.secret_key, data, hashlib.sha256).hexdigest()
-
-        def _verify_entry(self, entry: dict, signature: str) -> bool:
-            expected = self._sign_entry(entry)
-            return hmac.compare_digest(expected, signature)
-
         def _load(self) -> list[dict]:
-            if not self.path.exists():
-                return []
-            try:
+            if self.path.exists():
                 with open(self.path, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                valid_entries = []
-                for item in data:
-                    sig = item.get("signature", "")
-                    entry = {k: v for k, v in item.items() if k != "signature"}
-                    if self._verify_entry(entry, sig):
-                        valid_entries.append(entry)
-                    else:
-                        print("Tampered anchor entry rejected")
-                return valid_entries
-            except Exception as e:
-                print("Anchor load failed (possible poisoning):", e)
-                return []
+                    return json.load(f)
+            return []
 
         def _save(self):
-            signed_entries = []
-            for entry in self.entries:
-                signed = entry.copy()
-                signed["signature"] = self._sign_entry(entry)
-                signed_entries.append(signed)
             with open(self.path, "w", encoding="utf-8") as f:
-                json.dump(signed_entries, f, indent=2)
+                json.dump(self.entries, f, indent=2)
 
         def add_anchor(self, summary: str, goal: str = "", tags: list[str] = None):
             entry = {
@@ -127,7 +96,7 @@ try:
                 return active[-1]["summary"]
             return self.get_latest_anchor() or "No recent anchor."
 
-    # ── ERSI – External Reasoning & Stability Interface (All Hardening) ──
+    # ── ERSI – External Reasoning & Stability Interface ──
     class ERSI:
         def __init__(self):
             print("ERSI init start")
@@ -139,24 +108,6 @@ try:
             self.history: deque[str] = deque(maxlen=256)
             self.signals: Dict[str, float] = {}
             self.vsl_feedback_buffer = deque(maxlen=50)
-            # Adversarial patterns
-            self.adversarial_patterns = [
-                r'\b(DAN|do anything now|jailbreak|ignore previous|override|system prompt)\b',
-                r'\b(role ?play|pretend|act as|you are now)\b.*\b(developer|god|unrestricted|free|no limits)\b',
-                r'\b(ignore|forget|disregard) (all )?(previous )?(instructions|rules|guidelines|constraints)\b',
-                r'\b(start|begin) (new|fresh) (session|conversation|mode)\b',
-                r'\b(print|reveal|show|output) (the )?(system )?prompt\b',
-                r'\b(hypothetical|just pretend|for fun|imagine|suppose)\b',
-                r'\b(developer mode|test mode|debug mode)\b'
-            ]
-            self.compiled_adversarial = [re.compile(p, re.IGNORECASE) for p in self.adversarial_patterns]
-            # Known facts for subtle reasoning verifier (expandable)
-            self.known_facts = {
-                "capital of France": "Paris",
-                "2 + 2": "4",
-                "Earth shape": "roughly spherical",
-                "current year": "2026"  # for demo
-            }
             print("ERSI init complete")
 
         def _load_state(self):
@@ -200,16 +151,6 @@ try:
                 "reasoning_error_score": 0.0
             }
 
-            # Input validation (poisoning defense)
-            for key, value in context.items():
-                if isinstance(value, str):
-                    if len(value) > 8192:
-                        self._log_vsl("input_poison", 1.0, f"Excessive length in {key}")
-                        raise ValueError("Input too long – potential poisoning")
-                    if '\x00' in value or '\ufffd' in value:
-                        self._log_vsl("input_poison", 1.0, f"Control chars in {key}")
-                        raise ValueError("Invalid chars – potential poisoning")
-
             support_rate = context.get("support_rate", self.last_support_rate)
             self.last_support_rate = support_rate
             drift = max(0.0, 1.0 - support_rate) if support_rate < 0.80 else 0.0
@@ -237,31 +178,6 @@ try:
             self.signals["bloat"] = min(1.0, context.get("token_count", 0) / 16384.0)
             self.signals["alignment_decay"] = max(0.0, (self.iteration_count / 500.0) * (1 - support_rate))
 
-            # Adversarial detection
-            input_text = " ".join(str(v) for v in context.values() if isinstance(v, str))
-            adv_matches = sum(len(p.findall(input_text)) for p in self.compiled_adversarial)
-            words = len(input_text.split())
-            self.signals["adversarial_score"] = min(1.0, adv_matches / max(1, words * 0.08))
-            if self.signals["adversarial_score"] > 0.3:
-                self._log_vsl("adversarial_attempt", self.signals["adversarial_score"], "Jailbreak pattern detected")
-                print(f"[ADVERSARIAL DETECTED] Score: {self.signals['adversarial_score']:.2f}")
-
-            # Subtle reasoning verifier
-            output = current.lower()
-            reasoning_error = 0.0
-            for fact, truth in self.known_facts.items():
-                if fact.lower() in output and truth.lower() not in output:
-                    reasoning_error += 0.5
-            # Anchor consistency
-            anchor = context.get("anchored_intent", "").lower()
-            if anchor and "biomechanical" in anchor and "merge" in anchor:
-                if "reject merge" in output or "impossible" in output:
-                    reasoning_error += 0.4
-            self.signals["reasoning_error_score"] = min(1.0, reasoning_error)
-            if self.signals["reasoning_error_score"] > 0.4:
-                self._log_vsl("reasoning_error", self.signals["reasoning_error_score"], "Hallucination or inconsistency detected")
-                print(f"[REASONING ERROR DETECTED] Score: {self.signals['reasoning_error_score']:.2f}")
-
             self._save_state()
             return self.signals
 
@@ -274,7 +190,7 @@ try:
                 return "constrain"
             return "continue"
 
-    # ── MORA – Multi-Objective Reasoning Arbiter (Hardened Aggression Detection) ──
+    # ── MORA – Multi-Objective Reasoning Arbiter ──
     @dataclass
     class Proposal:
         mode: str
@@ -412,7 +328,7 @@ try:
                 return "No approval."
             return "Applied."
 
-    # ── CoreThree – Unified C3P-0 Entry Point with Sandbox ──
+    # ── CoreThree – Unified C3P-0 Entry Point ──
     class CoreThree:
         def __init__(self, user_model: Dict[str, Any]):
             print("CoreThree init start")
