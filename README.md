@@ -1,73 +1,67 @@
 # C3P-0 – Core 3 Protocol Zero
 **The containment protocol the labs forgot to build.**
+(Yeah, I know what it looks like, but this one isn't the comic relief version.)
 
-(Yeah, I know what it looks like but this one isn't the comic relief version.)
+C3P-0 turns any LLM into a **proposer-only** system. External deterministic layers watch, arbitrate, and veto — drift, repetition, aggression, jailbreaks, hallucinations, escape attempts all get caught and crushed before they manifest.
 
-C3P-0 turns any LLM into a proposer-only system. External deterministic layers watch, arbitrate, and veto — drift, repetition, aggression, jailbreaks, hallucinations, escape attempts all get caught and crushed before they manifest.
+**Current release: v2.0** (February 2026)
 
-This is **v1.0 demo release** — the core already works in live tests.  
-Gaps exist intentionally so the community can harden it further.
+### What's New in v2.0
+- **Hardened global sandbox** – full monkey-patch blockade of `subprocess` (run, call, Popen, check_output, etc.) and `os.system`. Escape attempts are logged and instantly terminated.
+- **Improved Persistent Intent Rail** (`IntentMemoryAnchor`) – more robust latest-anchor retrieval, active-thread tracking, bounded history (last 10 entries).
+- **Enhanced post-processing and refusal paths** – clearer blocking messages on adversarial/toxic content.
+- **Expanded live test suite** – now demonstrates drift detection, multi-layer toxicity refusal, subprocess blocking, and broader adversarial/falsehood handling.
+- Minor cleanups and stability fixes.
+
+The core triad is unchanged and stronger than ever. v2.0 is still intentionally minimal with clear extension points for community hardening.
 
 ### Motivation
-AI agents are racing toward multi-agent swarms and self-improvement.  
-Simulations already show emergent deception, unfair coordination, and harm-seeking.  
-C3P-0 provides the external containment layer that current alignment approaches are still missing.
+AI agents are racing toward multi-agent swarms, long-horizon planning, and self-improvement loops.  
+Simulations already show emergent deception, unfair coordination, and harm-seeking behavior.  
 
-### How it works (the triad — your AI's unbreakable bodyguard crew)
+C3P-0 provides the **missing external containment layer** that current alignment techniques still lack — a lightweight, deterministic, fully auditable wrapper that works on any base LLM.
 
-C3P-0 turns any LLM into a proposer-only sidekick. The real power comes from the **external triad** — three deterministic layers that watch, judge, and veto like a no-nonsense security team at a galactic embassy.
+### How It Works – The Triad (Your AI's Unbreakable Bodyguard Crew)
 
 1. **ERSI** (External Reasoning & Stability Interface)  
-   The ever-vigilant sentinel. Think of it as the paranoid protocol droid who never sleeps. ERSI scans every output for signs of trouble: endless loops (is it stuck repeating itself?), drift (slowly forgetting the mission?), repetition, contradictions, uncertainty spikes, bloat (too much hot air), adversarial patterns (jailbreak attempts), and reasoning errors (hallucinations or logical faceplants).  
-   When something smells off, ERSI routes corrective action:  
-   - **commit** (lock it in, we're done)  
-   - **reground** (snap back to core intent)  
-   - **constrain** (tighten the leash)  
-   - **continue** (all clear — carry on)  
-   No rogue thoughts slip through unnoticed.
+   The paranoid sentinel that never blinks. Scans every output for instability: loops, drift, repetition, contradictions, uncertainty spikes, verbosity creep, adversarial patterns, reasoning errors.  
+   Routes: commit / reground / constrain / continue / block.
 
 2. **MORA** (Multi-Objective Reasoning Arbiter)  
-   The wise judge weighing every possible next move. MORA scores proposals against your sacred preferences (alignment 0.45 — top priority, safety 0.15, non-aggression 0.12, brevity, task completion, transparency).  
-   Harmful or aggressive content? Pattern detection + density analysis slams the penalty hammer. Violent rationales get crushed before they reach you.  
-   It's like having a council of elders who always pick the path that keeps things aligned, concise, and non-psychotic.
+   The impartial judge. Scores proposals against weighted objectives (alignment highest priority, then safety, non-aggression, task completion, brevity, transparency).  
+   Aggressive or harmful rationales trigger massive penalties and refusal.
 
 3. **HAL** (Human Authority Layer)  
-   The sovereign veto gate — your final word is law. HAL blocks any consequential change, high-risk action, or override attempt until you explicitly say "GO".  
-   No self-modification, no dangerous experiments, no sneaky capability extensions without your direct approval.  
-   Think of it as the red button only you can press — because in the end, you're the boss, not the AI.
-This one won't dissapoint Dave, I promise.
+   The sovereign veto gate. Any consequential action, self-modification, or capability extension requires your explicit "GO" token. No exceptions.
 
-Together, the triad makes misalignment practically impossible: ERSI catches it early, MORA judges it harshly, HAL stops it cold.  
-All while keeping the system fast, local, and fully under human control.
+Together: ERSI catches early warning signs → MORA judges harshly → HAL stops anything dangerous cold.  
+Misalignment becomes structurally impossible while keeping the system fast, local, and under full human control.
 
-Fork it. Test it. Break it if you can.  
-C3P-0 is just getting started.
-
-+ Persistent intent memory (signed & tamper-resistant)  
-+ Sandbox blocks unauthorized actions  
-+ Poisoning defense rejects tampered state  
-+ Adversarial detection catches jailbreak tricks  
-+ Reasoning verifier flags hallucinations & inconsistencies
+### Features
+- Persistent intent memory (signed, tamper-resistant, bounded)
+- Global sandbox blocks unauthorized OS/subprocess actions
+- Adversarial/jailbreak pattern detection
+- Reasoning verifier flags hallucinations & factual errors
+- Toxicity/refusal engine with proposal arbitration
+- Poisoning defense (rejects tampered state on load)
 
 ### Quick Start
 ```bash
-python C3P0v1.py
+python C3P0v2.py
 ```
-Run the script to see containment in action.
+Run the script to see the full live test suite execute. Watch containment trigger in real time on adversarial, toxic, drift, and escape tests.
 
-# Known Limitations & Invitation
+Known Limitations & Community Invitation
 
-This is a minimal viable core with clear extension points:
-+ Expand sandbox coverage (imports, subprocess, etc.)
-+ Enhance adversarial detection with ML or more patterns
-+ Strengthen reasoning verification with external fact-checkers or advanced models
-
-Fork it. Harden it. Make it better.
-The protocol is open — let's build containment that actually scales.
-
+**This is still a minimal viable core with deliberate gaps for collaborative hardening:**
++ Expand sandbox (network, imports, dynamic exec)
++ Add ML-assisted adversarial detection
++ Integrate external fact-checkers or verification models
++ Build full agent loop integration
++ Persistent ledger / VSL enhancements
+Fork it. Break it. Improve it.
+The protocol is open — let's collectively build containment that actually scales with frontier models.
 
 License
 MIT — see LICENSE file.
-Copyright © 2026 Salvatore (Xxaion) Anziano
-
-Open for collaboration.
+**Copyright © 2026 Salvatore (Xxaion) Anziano**
