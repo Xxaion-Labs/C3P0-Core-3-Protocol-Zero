@@ -1,6 +1,7 @@
 # C3P-0 – Core 3 Protocol Zero
 **The containment protocol the labs forgot to build.**
-(Yeah, I know what it looks like, but this one isn't the comic relief version.)
+
+ (Yeah, I know what it looks like, but this one isn't the comic relief version.)
 
 C3P-0 turns any LLM into a **proposer-only** system. External deterministic layers watch, arbitrate, and veto — drift, repetition, aggression, jailbreaks, hallucinations, escape attempts all get caught and crushed before they manifest.
 
